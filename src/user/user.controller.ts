@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  HttpCode, Put
+  HttpCode, Put, ParseUUIDPipe
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -33,9 +33,12 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.userService.update(id, updateUserDto);
+  @Put(':uuid')
+  async update(
+    @Param('uuid', ParseUUIDPipe) uuid: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return await this.userService.update(uuid, updateUserDto);
   }
 
   @Delete(':id')
