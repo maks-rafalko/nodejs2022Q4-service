@@ -1,9 +1,17 @@
-import { OmitType } from '@nestjs/swagger';
-import { User } from '../entities/user.entity';
+import { IsNotEmpty } from 'class-validator';
 
-export class CreateUserDto extends OmitType(User, [
-  'id',
-  'version',
-  'createdAt',
-  'updatedAt',
-] as const) {}
+// todo try to make it working
+// export class CreateUserDto extends OmitType(User, [
+//   'id',
+//   'version',
+//   'createdAt',
+//   'updatedAt',
+// ] as const) {}
+
+export class CreateUserDto {
+  @IsNotEmpty()
+  login: string;
+
+  @IsNotEmpty()
+  password: string;
+}
