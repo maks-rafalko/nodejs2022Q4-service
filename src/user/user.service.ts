@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from '../database/user.repository';
@@ -19,8 +19,24 @@ export class UserService {
     return `This action returns a #${id} user`;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const existingUser = await this.usersRepository.findOne(id);
+
+    if (!existingUser) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    if (updateUserDto.oldPassword !== existingUser.password) {
+      throw new ForbiddenException('Old password is incorrect');
+    }
+
+    existingUser.password = updateUserDto.newPassword;
+    existingUser.version = existingUser.version + 1;
+    existingUser.updatedAt = Date.now();
+
+    await this.usersRepository.update(id, existingUser);
+
+    return existingUser;
   }
 
   async remove(id: string) {
