@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from '../database/user.repository';
@@ -21,21 +17,11 @@ export class UserService {
   }
 
   async findOne(uuid: string): Promise<User> {
-    const existingUser = await this.usersRepository.findOne(uuid);
-
-    if (!existingUser) {
-      throw new NotFoundException(`User with id ${uuid} not found`);
-    }
-
-    return existingUser;
+    return await this.usersRepository.findOne(uuid);
   }
 
   async update(uuid: string, updateUserDto: UpdateUserDto) {
     const existingUser = await this.usersRepository.findOne(uuid);
-
-    if (!existingUser) {
-      throw new NotFoundException(`User with id ${uuid} not found`);
-    }
 
     if (updateUserDto.oldPassword !== existingUser.password) {
       throw new ForbiddenException('Old password is incorrect');
@@ -51,13 +37,6 @@ export class UserService {
   }
 
   async remove(uuid: string) {
-    // todo move to controller as param converter
-    const existingUser = await this.usersRepository.findOne(uuid);
-
-    if (!existingUser) {
-      throw new NotFoundException(`User with id ${uuid} not found`);
-    }
-
     return await this.usersRepository.remove(uuid);
   }
 }
