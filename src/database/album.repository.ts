@@ -1,0 +1,43 @@
+import { Album } from '../album/entities/album.entity';
+import { storage } from './storage.db';
+import { CreateAlbumDto } from '../album/dto/create-album.dto';
+
+class AlbumRepository {
+  async findOne(id: string): Promise<Album | undefined> {
+    return storage.albums.find((album: Album) => album.id === id);
+  }
+
+  async findAll(): Promise<Album[]> {
+    return storage.albums;
+  }
+
+  async create(CreateAlbumDto: CreateAlbumDto): Promise<Album> {
+    const newAlbum = new Album(
+      CreateAlbumDto.name,
+      CreateAlbumDto.year,
+      CreateAlbumDto.artistId,
+    );
+
+    storage.albums.push(newAlbum);
+
+    return newAlbum;
+  }
+
+  async update(id: string, album: Album): Promise<void> {
+    const index = storage.albums.findIndex((album: Album) => album.id === id);
+
+    if (index !== -1) {
+      storage.albums[index] = album;
+    }
+  }
+
+  async remove(id: string): Promise<void> {
+    const index = storage.albums.findIndex((album: Album) => album.id === id);
+
+    if (index !== -1) {
+      storage.albums.splice(index, 1);
+    }
+  }
+}
+
+export { AlbumRepository };

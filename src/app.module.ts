@@ -9,9 +9,10 @@ import { ArtistModule } from './artist/artist.module';
 import { UserModule } from './user/user.module';
 import { DatabaseModule } from './database/database.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { AlbumModule } from './album/album.module';
 
 @Module({
-  imports: [ArtistModule, UserModule, DatabaseModule],
+  imports: [AlbumModule, ArtistModule, UserModule, DatabaseModule],
   controllers: [AppController],
   providers: [
     AppService,

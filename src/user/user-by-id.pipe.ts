@@ -1,6 +1,5 @@
 import { PipeTransform, Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entities/user.entity';
-import { UserRepository } from '../database/user.repository';
 import { UserService } from './user.service';
 
 @Injectable()
