@@ -3,10 +3,14 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { ArtistRepository } from '../database/artist.repository';
 import { Artist } from './entities/artist.entity';
+import { TrackRepository } from '../database/track.repository';
 
 @Injectable()
 export class ArtistService {
-  constructor(private artistRepository: ArtistRepository) {}
+  constructor(
+    private artistRepository: ArtistRepository,
+    private trackRepository: TrackRepository,
+  ) {}
 
   async create(createArtistDto: CreateArtistDto) {
     return await this.artistRepository.create(createArtistDto);
@@ -33,5 +37,13 @@ export class ArtistService {
 
   async remove(uuid: string): Promise<void> {
     await this.artistRepository.remove(uuid);
+
+    // remove "foreign keys" - links to tracks
+    const tacks = await this.trackRepository.findByArtistId(uuid);
+
+    for (const track of tacks) {
+      track.artistId = null;
+      await this.trackRepository.update(track.id, track);
+    }
   }
 }

@@ -10,9 +10,10 @@ import { UserModule } from './user/user.module';
 import { DatabaseModule } from './database/database.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { AlbumModule } from './album/album.module';
+import { TrackModule } from './track/track.module';
 
 @Module({
-  imports: [AlbumModule, ArtistModule, UserModule, DatabaseModule],
+  imports: [AlbumModule, ArtistModule, TrackModule, UserModule, DatabaseModule],
   controllers: [AppController],
   providers: [
     AppService,
