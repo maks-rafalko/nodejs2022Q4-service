@@ -1,7 +1,12 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from '../database/user.repository';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -15,15 +20,21 @@ export class UserService {
     return await this.usersRepository.findAll();
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const existingUser = await this.usersRepository.findOne(id);
+  async findOne(uuid: string): Promise<User> {
+    const existingUser = await this.usersRepository.findOne(uuid);
 
     if (!existingUser) {
-      throw new NotFoundException(`User with id ${id} not found`);
+      throw new NotFoundException(`User with id ${uuid} not found`);
+    }
+
+    return existingUser;
+  }
+
+  async update(uuid: string, updateUserDto: UpdateUserDto) {
+    const existingUser = await this.usersRepository.findOne(uuid);
+
+    if (!existingUser) {
+      throw new NotFoundException(`User with id ${uuid} not found`);
     }
 
     if (updateUserDto.oldPassword !== existingUser.password) {
@@ -34,12 +45,19 @@ export class UserService {
     existingUser.version = existingUser.version + 1;
     existingUser.updatedAt = Date.now();
 
-    await this.usersRepository.update(id, existingUser);
+    await this.usersRepository.update(uuid, existingUser);
 
     return existingUser;
   }
 
-  async remove(id: string) {
-    return await this.usersRepository.remove(id);
+  async remove(uuid: string) {
+    // todo move to controller as param converter
+    const existingUser = await this.usersRepository.findOne(uuid);
+
+    if (!existingUser) {
+      throw new NotFoundException(`User with id ${uuid} not found`);
+    }
+
+    return await this.usersRepository.remove(uuid);
   }
 }

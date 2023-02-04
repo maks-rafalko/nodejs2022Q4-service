@@ -28,9 +28,9 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get(':uuid')
+  async findOne(@Param('uuid', ParseUUIDPipe) uuid: string) {
+    return await this.userService.findOne(uuid);
   }
 
   @Put(':uuid')
@@ -41,9 +41,9 @@ export class UserController {
     return await this.userService.update(uuid, updateUserDto);
   }
 
-  @Delete(':id')
+  @Delete(':uuid')
   @HttpCode(StatusCodes.NO_CONTENT)
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+  remove(@Param('uuid', ParseUUIDPipe) uuid: string,) {
+    return this.userService.remove(uuid);
   }
 }

@@ -8,23 +8,8 @@ interface Storage {
 }
 
 const storage = {
-  users: [
-    {
-      id: uuidv4(),
-      login: 'admin!',
-      password: 'admin',
-      version: 1,
-      createdAt: 1610000000000,
-      updatedAt: 1610000000000,
-    },
-  ],
-  artists: [
-    {
-      id: uuidv4(),
-      name: 'The Beatles !!',
-      grammy: true,
-    },
-  ],
+  users: [new User('admin', 'admin')],
+  artists: [],
 };
 
 export { storage, Storage };
