@@ -10,7 +10,8 @@ import {
 import { FavsService } from './favs.service';
 import { StatusCodes } from 'http-status-codes';
 
-// when album/artist/track is removed - remove from favorites
+// todo when album/artist/track is removed - remove from favorites
+// todo fix open api docs
 
 @Controller('favs')
 export class FavsController {
