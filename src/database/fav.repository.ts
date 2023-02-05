@@ -10,7 +10,9 @@ class FavRepository {
   }
 
   async addTrack(track: Track) {
-    storage.favs.tracks.push(track.id);
+    if (!storage.favs.tracks.includes(track.id)) {
+      storage.favs.tracks.push(track.id);
+    }
   }
 
   async removeTrack(removedTrackId: string) {
@@ -24,7 +26,9 @@ class FavRepository {
   }
 
   async addAlbum(album: Album) {
-    storage.favs.albums.push(album.id);
+    if (!storage.favs.albums.includes(album.id)) {
+      storage.favs.albums.push(album.id);
+    }
   }
 
   async removeAlbum(removedAlbumId: string) {
@@ -38,7 +42,9 @@ class FavRepository {
   }
 
   async addArtist(artist: Artist) {
-    storage.favs.artists.push(artist.id);
+    if (!storage.favs.artists.includes(artist.id)) {
+      storage.favs.artists.push(artist.id);
+    }
   }
 
   async removeArtist(removedArtistId: string) {

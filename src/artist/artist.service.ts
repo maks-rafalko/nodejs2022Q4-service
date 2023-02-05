@@ -66,7 +66,6 @@ export class ArtistService {
   }
 
   private async removeArtistFromFavorites(artistUuid: string): Promise<void> {
-    // todo check we can't add same artist/album/track more than once
     await this.favRepository.removeArtist(artistUuid);
   }
 }
