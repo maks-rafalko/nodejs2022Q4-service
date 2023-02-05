@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
 import { AlbumRepository } from '../database/album.repository';
 import { TrackRepository } from '../database/track.repository';
 import { FavRepository } from '../database/fav.repository';
+import { ArtistRepository } from '../database/artist.repository';
 
 @Injectable()
 export class AlbumService {
@@ -12,9 +13,12 @@ export class AlbumService {
     private albumRepository: AlbumRepository,
     private trackRepository: TrackRepository,
     private favRepository: FavRepository,
+    private artistRepository: ArtistRepository,
   ) {}
 
   async create(createAlbumDto: CreateAlbumDto) {
+    await this.assertArtistExistsIfPassed(createAlbumDto.artistId);
+
     return await this.albumRepository.create(createAlbumDto);
   }
 
@@ -28,6 +32,8 @@ export class AlbumService {
 
   async update(uuid: string, updateAlbumDto: UpdateAlbumDto) {
     const existingAlbum = await this.albumRepository.findOne(uuid);
+
+    await this.assertArtistExistsIfPassed(updateAlbumDto.artistId);
 
     existingAlbum.name = updateAlbumDto.name;
     existingAlbum.year = updateAlbumDto.year;
@@ -59,5 +65,19 @@ export class AlbumService {
     removedAlbumId: string,
   ): Promise<void> {
     await this.favRepository.removeAlbum(removedAlbumId);
+  }
+
+  private async assertArtistExistsIfPassed(
+    artistId: string | null,
+  ): Promise<void> {
+    if (artistId === null) {
+      return;
+    }
+
+    const existingArtistId = await this.artistRepository.findOne(artistId);
+
+    if (!existingArtistId) {
+      throw new BadRequestException('Artist not found');
+    }
   }
 }

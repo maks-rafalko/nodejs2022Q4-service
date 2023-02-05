@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsString, ValidateIf } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Min,
+  ValidateIf,
+} from 'class-validator';
 
 export class CreateAlbumDto {
   @IsNotEmpty()
@@ -7,6 +13,7 @@ export class CreateAlbumDto {
 
   @IsNotEmpty()
   @IsNumber()
+  @Min(0)
   year: number;
 
   @IsNotEmpty()
