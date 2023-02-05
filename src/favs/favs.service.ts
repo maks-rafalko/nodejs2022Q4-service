@@ -48,6 +48,16 @@ export class FavsService {
     await this.favRepository.addTrack(existingTrack);
   }
 
+  async removeTrack(uuid: string) {
+    const existingTrack = await this.trackRepository.findOne(uuid);
+
+    if (!existingTrack) {
+      throw new UnprocessableEntityException('Track not found.');
+    }
+
+    await this.favRepository.removeTrack(existingTrack);
+  }
+
   async addAlbum(uuid: string) {
     const existingAlbum = await this.albumRepository.findOne(uuid);
 
@@ -58,6 +68,16 @@ export class FavsService {
     await this.favRepository.addAlbum(existingAlbum);
   }
 
+  async removeAlbum(uuid: string) {
+    const existingAlbum = await this.albumRepository.findOne(uuid);
+
+    if (!existingAlbum) {
+      throw new UnprocessableEntityException('Album not found.');
+    }
+
+    await this.favRepository.removeAlbum(existingAlbum);
+  }
+
   async addArtist(uuid: string) {
     const existingArtist = await this.artistRepository.findOne(uuid);
 
@@ -66,5 +86,15 @@ export class FavsService {
     }
 
     await this.favRepository.addArtist(existingArtist);
+  }
+
+  async removeArtist(uuid: string) {
+    const existingArtist = await this.artistRepository.findOne(uuid);
+
+    if (!existingArtist) {
+      throw new UnprocessableEntityException('Artist not found.');
+    }
+
+    await this.favRepository.removeArtist(existingArtist);
   }
 }
