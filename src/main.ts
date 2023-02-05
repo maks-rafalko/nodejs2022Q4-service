@@ -13,7 +13,7 @@ async function bootstrap() {
     readFileSync(join(__dirname, '..', 'doc', 'api.yaml'), 'utf8'),
   ) as OpenAPIObject;
 
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document);
 
   await app.listen(process.env.PORT || 4000);
 }
