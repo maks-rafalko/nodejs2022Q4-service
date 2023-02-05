@@ -1,6 +1,7 @@
 import { Album } from '../album/entities/album.entity';
 import { storage } from './storage.db';
 import { CreateAlbumDto } from '../album/dto/create-album.dto';
+import { Track } from '../track/entities/track.entity';
 
 class AlbumRepository {
   async findOne(id: string): Promise<Album | undefined> {
@@ -41,6 +42,10 @@ class AlbumRepository {
 
   async getAlbumsByIds(albums: string[]) {
     return storage.albums.filter((album: Album) => albums.includes(album.id));
+  }
+
+  async findByArtistId(artistId: string): Promise<Album[]> {
+    return storage.albums.filter((track: Track) => track.artistId === artistId);
   }
 }
 
