@@ -11,9 +11,17 @@ import { DatabaseModule } from './database/database.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { AlbumModule } from './album/album.module';
 import { TrackModule } from './track/track.module';
+import { FavsModule } from './favs/favs.module';
 
 @Module({
-  imports: [AlbumModule, ArtistModule, TrackModule, UserModule, DatabaseModule],
+  imports: [
+    AlbumModule,
+    ArtistModule,
+    TrackModule,
+    UserModule,
+    DatabaseModule,
+    FavsModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

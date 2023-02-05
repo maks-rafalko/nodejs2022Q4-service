@@ -38,6 +38,12 @@ class ArtistRepository {
       storage.artists.splice(index, 1);
     }
   }
+
+  async getArtistsByIds(artists: string[]) {
+    return storage.artists.filter((artist: Artist) =>
+      artists.includes(artist.id),
+    );
+  }
 }
 
 export { ArtistRepository };

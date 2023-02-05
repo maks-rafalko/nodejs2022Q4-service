@@ -38,6 +38,10 @@ class AlbumRepository {
       storage.albums.splice(index, 1);
     }
   }
+
+  async getAlbumsByIds(albums: string[]) {
+    return storage.albums.filter((album: Album) => albums.includes(album.id));
+  }
 }
 
 export { AlbumRepository };

@@ -47,6 +47,10 @@ class TrackRepository {
       storage.tracks.splice(index, 1);
     }
   }
+
+  async getTracksByIds(tracks: string[]) {
+    return storage.tracks.filter((track: Track) => tracks.includes(track.id));
+  }
 }
 
 export { TrackRepository };
