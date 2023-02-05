@@ -12,7 +12,7 @@ interface Storage {
   favs: Fav;
 }
 
-const storage = {
+const storage: Storage = {
   users: [],
   artists: [],
   albums: [],
@@ -20,4 +20,4 @@ const storage = {
   favs: new Fav(),
 };
 
-export { storage, Storage };
+export { storage };
