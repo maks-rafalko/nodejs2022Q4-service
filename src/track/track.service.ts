@@ -3,10 +3,14 @@ import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { TrackRepository } from '../database/track.repository';
 import { Track } from './entities/track.entity';
+import { FavRepository } from '../database/fav.repository';
 
 @Injectable()
 export class TrackService {
-  constructor(private trackRepository: TrackRepository) {}
+  constructor(
+    private trackRepository: TrackRepository,
+    private favRepository: FavRepository,
+  ) {}
 
   async create(createTrackDto: CreateTrackDto) {
     return await this.trackRepository.create(createTrackDto);
@@ -35,5 +39,11 @@ export class TrackService {
 
   async remove(uuid: string): Promise<void> {
     await this.trackRepository.remove(uuid);
+
+    await this.removeTrackFromFavorites(uuid);
+  }
+
+  private async removeTrackFromFavorites(trackUuid: string): Promise<void> {
+    await this.favRepository.removeTrack(trackUuid);
   }
 }

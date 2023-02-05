@@ -4,12 +4,14 @@ import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
 import { AlbumRepository } from '../database/album.repository';
 import { TrackRepository } from '../database/track.repository';
+import { FavRepository } from '../database/fav.repository';
 
 @Injectable()
 export class AlbumService {
   constructor(
     private albumRepository: AlbumRepository,
     private trackRepository: TrackRepository,
+    private favRepository: FavRepository,
   ) {}
 
   async create(createAlbumDto: CreateAlbumDto) {
@@ -39,12 +41,23 @@ export class AlbumService {
   async remove(uuid: string): Promise<void> {
     await this.albumRepository.remove(uuid);
 
-    // remove "foreign keys" - links to tracks
+    await this.removeRelationsFromTracks(uuid);
+
+    await this.removeAlbumFromFavorites(uuid);
+  }
+
+  private async removeRelationsFromTracks(uuid: string): Promise<void> {
     const tacks = await this.trackRepository.findByAlbumId(uuid);
 
     for (const track of tacks) {
       track.albumId = null;
       await this.trackRepository.update(track.id, track);
     }
+  }
+
+  private async removeAlbumFromFavorites(
+    removedAlbumId: string,
+  ): Promise<void> {
+    await this.favRepository.removeAlbum(removedAlbumId);
   }
 }

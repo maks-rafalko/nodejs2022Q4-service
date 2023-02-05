@@ -13,9 +13,9 @@ class FavRepository {
     storage.favs.tracks.push(track.id);
   }
 
-  async removeTrack(removedTrack: Track) {
+  async removeTrack(removedTrackId: string) {
     const index = storage.favs.tracks.findIndex(
-      (uuid: string) => uuid === removedTrack.id,
+      (uuid: string) => uuid === removedTrackId,
     );
 
     if (index !== -1) {
@@ -27,9 +27,9 @@ class FavRepository {
     storage.favs.albums.push(album.id);
   }
 
-  async removeAlbum(removedAlbum: Album) {
+  async removeAlbum(removedAlbumId: string) {
     const index = storage.favs.albums.findIndex(
-      (uuid: string) => uuid === removedAlbum.id,
+      (uuid: string) => uuid === removedAlbumId,
     );
 
     if (index !== -1) {
@@ -41,9 +41,9 @@ class FavRepository {
     storage.favs.artists.push(artist.id);
   }
 
-  async removeArtist(removedArtist: Artist) {
+  async removeArtist(removedArtistId: string) {
     const index = storage.favs.artists.findIndex(
-      (uuid: string) => uuid === removedArtist.id,
+      (uuid: string) => uuid === removedArtistId,
     );
 
     if (index !== -1) {

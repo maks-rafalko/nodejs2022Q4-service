@@ -4,12 +4,14 @@ import { UpdateArtistDto } from './dto/update-artist.dto';
 import { ArtistRepository } from '../database/artist.repository';
 import { Artist } from './entities/artist.entity';
 import { TrackRepository } from '../database/track.repository';
+import { FavRepository } from '../database/fav.repository';
 
 @Injectable()
 export class ArtistService {
   constructor(
     private artistRepository: ArtistRepository,
     private trackRepository: TrackRepository,
+    private favRepository: FavRepository,
   ) {}
 
   async create(createArtistDto: CreateArtistDto) {
@@ -38,12 +40,22 @@ export class ArtistService {
   async remove(uuid: string): Promise<void> {
     await this.artistRepository.remove(uuid);
 
-    // remove "foreign keys" - links to tracks
-    const tacks = await this.trackRepository.findByArtistId(uuid);
+    await this.removeRelationsFromTracks(uuid);
+
+    await this.removeArtistFromFavorites(uuid);
+  }
+
+  private async removeRelationsFromTracks(artistUuid: string): Promise<void> {
+    const tacks = await this.trackRepository.findByArtistId(artistUuid);
 
     for (const track of tacks) {
       track.artistId = null;
       await this.trackRepository.update(track.id, track);
     }
+  }
+
+  private async removeArtistFromFavorites(artistUuid: string): Promise<void> {
+    // todo check we can't add same artist/album/track more than once
+    await this.favRepository.removeArtist(artistUuid);
   }
 }

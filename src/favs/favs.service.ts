@@ -5,6 +5,8 @@ import { ArtistRepository } from '../database/artist.repository';
 import { AlbumRepository } from '../database/album.repository';
 import { TrackRepository } from '../database/track.repository';
 
+// todo cors
+
 @Injectable()
 export class FavsService {
   constructor(
@@ -55,7 +57,7 @@ export class FavsService {
       throw new UnprocessableEntityException('Track not found.');
     }
 
-    await this.favRepository.removeTrack(existingTrack);
+    await this.favRepository.removeTrack(uuid);
   }
 
   async addAlbum(uuid: string) {
@@ -75,7 +77,7 @@ export class FavsService {
       throw new UnprocessableEntityException('Album not found.');
     }
 
-    await this.favRepository.removeAlbum(existingAlbum);
+    await this.favRepository.removeAlbum(uuid);
   }
 
   async addArtist(uuid: string) {
@@ -95,6 +97,6 @@ export class FavsService {
       throw new UnprocessableEntityException('Artist not found.');
     }
 
-    await this.favRepository.removeArtist(existingArtist);
+    await this.favRepository.removeArtist(existingArtist.id);
   }
 }
