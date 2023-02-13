@@ -1,11 +1,29 @@
 services:
+  app:
+    image: maksrafalko/nodejs2022q4-service-app
+    depends_on:
+      - db
+    build:
+      context: .
+      target: dev
+    restart: on-failure
+    environment:
+      PORT: ${PORT}
+      # DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - "127.0.0.1:${PORT}:${PORT}"
+    networks:
+      - db
+    volumes:
+      - ./:/usr/src/app
+      - node-modules:/usr/src/app/node_modules
+
   db:
-    # todo add my image
-    # image: postgres:12.2
+    image: maksrafalko/nodejs2022q4-service-db
     build:
         context: ./docker/postgres
         dockerfile: Dockerfile
-    restart: always
+    restart: on-failure
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
