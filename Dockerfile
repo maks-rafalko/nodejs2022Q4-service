@@ -34,6 +34,4 @@ CMD ["node", "dist/main"]
 # Development
 FROM base as dev
 
-VOLUME /usr/src/app/node_modules
-
 ENTRYPOINT docker/app/node-entrypoint.sh
