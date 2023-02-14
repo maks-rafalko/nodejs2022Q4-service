@@ -9,7 +9,7 @@ services:
     restart: on-failure
     environment:
       PORT: ${PORT}
-      # DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - "127.0.0.1:${PORT}:${PORT}"
     networks:

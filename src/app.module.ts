@@ -24,11 +24,7 @@ import {User} from "./user/entities/user.entity";
     FavsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db',
-      port: 5432,
-      username: 'user',
-      password: 'password',
-      database: 'db',
+      url: process.env.DATABASE_URL,
       entities: [User],
       // todo replace with migrations
       synchronize: true,

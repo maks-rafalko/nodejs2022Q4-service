@@ -16,7 +16,7 @@ export class UserService {
     return this.usersRepository.save(new User(createUserDto.login, createUserDto.password));
   }
 
-  async findAll() {
+  async findAll(): Promise<User[]> {
     return await this.usersRepository.find();
   }
 
@@ -40,7 +40,7 @@ export class UserService {
     return existingUser;
   }
 
-  async remove(uuid: string) {
-    return await this.usersRepository.delete(uuid);
+  async remove(user: User) {
+    return await this.usersRepository.remove(user);
   }
 }
