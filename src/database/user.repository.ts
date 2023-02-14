@@ -1,6 +1,5 @@
 import { User } from '../user/entities/user.entity';
 import { storage } from './storage.db';
-import { CreateUserDto } from '../user/dto/create-user.dto';
 
 class UserRepository {
   async findOne(id: string): Promise<User | undefined> {
@@ -9,14 +8,6 @@ class UserRepository {
 
   async findAll(): Promise<User[]> {
     return storage.users;
-  }
-
-  async create(user: CreateUserDto): Promise<User> {
-    const newUser = new User(user.login, user.password);
-
-    storage.users.push(newUser);
-
-    return newUser;
   }
 
   async update(id: string, user: User): Promise<void> {

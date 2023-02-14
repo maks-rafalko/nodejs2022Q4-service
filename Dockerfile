@@ -11,8 +11,10 @@ RUN npm run build
 
 CMD ["exit", "0"]
 
-# Prodction
-FROM node:18-alpine3.17 as prod
+# Production
+FROM node:18-alpine as prod
+
+ENV NODE_ENV production
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -24,8 +26,6 @@ RUN npm ci --only=production \
 
 COPY --from=base /usr/src/app/dist ./
 COPY --from=base /usr/src/app/doc ./
-
-ENV NODE_ENV production
 
 EXPOSE ${PORT:-4000}
 
