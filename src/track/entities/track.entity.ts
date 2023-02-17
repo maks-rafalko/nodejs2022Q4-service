@@ -23,12 +23,12 @@ export class Track {
   @Column()
   name: string;
 
-  @ManyToOne(() => Artist, null, { onDelete: 'SET NULL' })
+  @ManyToOne(() => Artist, null, { onDelete: 'SET NULL', eager: true })
   @Expose({ name: 'artistId' })
   @Transform(({ value }) => (value ? value.id : null))
   artist: Artist | null;
 
-  @ManyToOne(() => Album, null, { onDelete: 'SET NULL' })
+  @ManyToOne(() => Album, null, { onDelete: 'SET NULL', eager: true })
   @Expose({ name: 'albumId' })
   @Transform(({ value }) => (value ? value.id : null))
   album: Album | null;

@@ -19,7 +19,7 @@ export class Album {
   @Column()
   year: number;
 
-  @ManyToOne(() => Artist, null, { onDelete: 'SET NULL' })
+  @ManyToOne(() => Artist, null, { onDelete: 'SET NULL', eager: true })
   @Expose({ name: 'artistId' })
   @Transform(({ value }) => (value ? value.id : null))
   artist: Artist | null;
