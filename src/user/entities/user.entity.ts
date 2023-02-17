@@ -17,6 +17,7 @@ export class User {
     this.version = 1;
   }
 
+  // todo uuid
   @PrimaryColumn()
   id: string;
 
