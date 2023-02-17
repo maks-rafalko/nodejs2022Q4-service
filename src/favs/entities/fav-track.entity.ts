@@ -7,7 +7,7 @@ export class FavoriteTrack {
     this.track = track;
   }
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => Track, null, { onDelete: 'CASCADE', eager: true })

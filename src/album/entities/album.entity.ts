@@ -10,7 +10,7 @@ export class Album {
     this.artist = artist;
   }
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

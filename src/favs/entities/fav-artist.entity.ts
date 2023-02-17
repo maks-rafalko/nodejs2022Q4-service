@@ -7,7 +7,7 @@ export class FavoriteArtist {
     this.artist = artist;
   }
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => Artist, null, { onDelete: 'CASCADE' })

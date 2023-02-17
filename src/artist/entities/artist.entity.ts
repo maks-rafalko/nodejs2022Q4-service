@@ -7,7 +7,7 @@ export class Artist {
     this.grammy = grammy;
   }
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

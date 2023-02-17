@@ -20,7 +20,7 @@ import { config } from './db.config';
     TrackModule,
     UserModule,
     FavsModule,
-    TypeOrmModule.forRoot(config),
+    TypeOrmModule.forRoot({ ...config, autoLoadEntities: true }),
   ],
   controllers: [AppController],
   providers: [

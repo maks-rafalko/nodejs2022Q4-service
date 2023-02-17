@@ -17,7 +17,7 @@ export class Track {
     this.duration = duration;
   }
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

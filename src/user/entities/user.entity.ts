@@ -15,7 +15,7 @@ export class User {
     this.version = 1;
   }
 
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
