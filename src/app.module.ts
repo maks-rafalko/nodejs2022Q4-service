@@ -6,13 +6,12 @@ import {
 import { AppController } from './app.controller';
 import { ArtistModule } from './artist/artist.module';
 import { UserModule } from './user/user.module';
-import { DatabaseModule } from './database/database.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { AlbumModule } from './album/album.module';
 import { TrackModule } from './track/track.module';
 import { FavsModule } from './favs/favs.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {User} from "./user/entities/user.entity";
+import { config } from './db.config';
 
 @Module({
   imports: [
@@ -20,15 +19,8 @@ import {User} from "./user/entities/user.entity";
     ArtistModule,
     TrackModule,
     UserModule,
-    DatabaseModule,
     FavsModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      url: process.env.DATABASE_URL,
-      entities: [User],
-      // todo replace with migrations
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(config),
   ],
   controllers: [AppController],
   providers: [

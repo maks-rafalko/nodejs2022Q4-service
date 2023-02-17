@@ -9,11 +9,13 @@ import { Repository } from 'typeorm';
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>
+    private usersRepository: Repository<User>,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    return this.usersRepository.save(new User(createUserDto.login, createUserDto.password));
+    return this.usersRepository.save(
+      new User(createUserDto.login, createUserDto.password),
+    );
   }
 
   async findAll(): Promise<User[]> {
@@ -21,11 +23,11 @@ export class UserService {
   }
 
   async findOne(uuid: string): Promise<User> {
-    return await this.usersRepository.findOneBy({id: uuid});
+    return await this.usersRepository.findOneBy({ id: uuid });
   }
 
   async update(uuid: string, updateUserDto: UpdateUserDto) {
-    const existingUser = await this.usersRepository.findOneBy({id: uuid});
+    const existingUser = await this.usersRepository.findOneBy({ id: uuid });
 
     if (updateUserDto.oldPassword !== existingUser.password) {
       throw new ForbiddenException('Old password is incorrect');
@@ -34,7 +36,6 @@ export class UserService {
     existingUser.password = updateUserDto.newPassword;
     existingUser.version = existingUser.version + 1;
 
-    // todo change to save in all places
     await this.usersRepository.save(existingUser);
 
     return existingUser;

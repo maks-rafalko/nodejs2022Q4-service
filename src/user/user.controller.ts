@@ -31,7 +31,9 @@ export class UserController {
   }
 
   @Get(':uuid')
-  async findOne(@Param('uuid', ParseUUIDPipe, UserByIdPipe) user: User): Promise<User> {
+  async findOne(
+    @Param('uuid', ParseUUIDPipe, UserByIdPipe) user: User,
+  ): Promise<User> {
     return user;
   }
 

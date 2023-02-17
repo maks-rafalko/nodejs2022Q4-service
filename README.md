@@ -64,6 +64,12 @@ See what API endpoints are available and how to use them in OpenAPI documentatio
 - [OpenAPI documentation](http://localhost:4000/doc/)
 - [Assignment](https://github.com/AlreadyBored/nodejs-assignments/blob/22bfc08752babe59c7c7ea25e3fde771dc7b27c6/assignments/rest-service/assignment.md)
 
+Working with `typeorm` CLI:
+
+```bash
+npm run typeorm schema:sync -- --dataSource=src/data-source.ts
+```
+
 ## Testing
 
 After application running open new terminal and enter:
