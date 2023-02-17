@@ -1,24 +1,21 @@
 import { Exclude, Transform } from 'class-transformer';
-import { v4 as uuidv4 } from 'uuid';
 import {
   Entity,
   Column,
-  PrimaryColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity()
 export class User {
   constructor(login: string, password: string) {
-    this.id = uuidv4();
     this.login = login;
     this.password = password;
     this.version = 1;
   }
 
-  // todo uuid
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()

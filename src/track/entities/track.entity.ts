@@ -1,5 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
-import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Artist } from '../../artist/entities/artist.entity';
 import { Expose, Transform } from 'class-transformer';
 import { Album } from '../../album/entities/album.entity';
@@ -12,14 +11,13 @@ export class Track {
     album: Album | null,
     duration: number,
   ) {
-    this.id = uuidv4();
     this.name = name;
     this.artist = artist;
     this.album = album;
     this.duration = duration;
   }
 
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
