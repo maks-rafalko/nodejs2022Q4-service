@@ -24,6 +24,12 @@ services:
         context: ./docker/postgres
         dockerfile: Dockerfile
     restart: on-failure
+    command: [
+      "postgres",
+      "-c", "log_destination=csvlog",
+      "-c", "logging_collector=on",
+      "-c", "log_directory=pg_log"
+    ]
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
