@@ -24,8 +24,10 @@ COPY package*.json ./
 RUN npm ci --only=production \
     && npm cache clean --force
 
-COPY --from=base /usr/src/app/dist ./
-COPY --from=base /usr/src/app/doc ./
+COPY --from=base /usr/src/app/dist ./dist
+COPY --from=base /usr/src/app/doc ./doc
+
+RUN ls -la
 
 EXPOSE ${PORT:-4000}
 

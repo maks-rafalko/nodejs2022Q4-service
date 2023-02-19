@@ -52,6 +52,8 @@ This will run 2 docker containers - one with Postgres database, another with Nes
 After starting the app you can open in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
+> Just for testing, there is also `prod` target on `Dockerfile`. It's possible to run application in a production mode, however requires rebuilding an image with `prod` target.
+
 ## Using application
 
 See what API endpoints are available and how to use them in OpenAPI documentation, and in assignment:
