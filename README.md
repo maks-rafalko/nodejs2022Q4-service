@@ -113,6 +113,12 @@ docker compose exec app npm run format
 docker compose exec app npm run typeorm schema:sync -- --dataSource=src/data-source.ts
 ```
 
+Migrations can be executed by running:
+
+```bash
+docker compose exec app npm run typeorm migration:run -- --dataSource=src/data-source.ts
+```
+
 ### Debugging in VSCode
 
 Press <kbd>F5</kbd> to debug.
