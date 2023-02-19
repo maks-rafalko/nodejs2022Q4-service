@@ -48,6 +48,8 @@ This will run 2 docker containers - one with Postgres database, another with Nes
 
 > **Warning**
 > During the `docker compose up` command, all migrations will be executed to create needed tables, so you can immediately use the app.
+>
+> See `docker/app/node-entrypoint.sh` for how migrations are executed.
 
 After starting the app you can open in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
