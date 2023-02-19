@@ -6,7 +6,7 @@ services:
         condition: service_started
     build:
       context: .
-      target: prod
+      target: dev
     restart: on-failure
     environment:
       PORT: ${PORT}
