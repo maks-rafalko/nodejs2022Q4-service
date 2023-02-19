@@ -12,7 +12,7 @@ services:
       PORT: ${PORT}
       DATABASE_URL: ${DATABASE_URL}
     ports:
-      - "127.0.0.1:${PORT}:${PORT}"
+      - "${PORT}:${PORT}"
     networks:
       - db
     volumes:
@@ -36,7 +36,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "127.0.0.1:${POSTGRES_PORT}:5432"
+      - "${POSTGRES_PORT}:5432"
     networks:
       - db
     volumes:
