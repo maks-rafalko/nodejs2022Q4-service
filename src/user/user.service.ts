@@ -38,7 +38,10 @@ export class UserService {
   async update(uuid: string, updateUserDto: UpdateUserDto) {
     const existingUser = await this.usersRepository.findOneBy({ id: uuid });
 
-    const passwordsMatch = await compare(updateUserDto.oldPassword, existingUser.password);
+    const passwordsMatch = await compare(
+      updateUserDto.oldPassword,
+      existingUser.password,
+    );
 
     if (!passwordsMatch) {
       throw new ForbiddenException('Old password is incorrect');

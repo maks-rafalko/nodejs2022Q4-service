@@ -152,6 +152,8 @@ paths:
                   token:
                     type: string
                 description: JWT Token
+        400:
+          description: Bad request
         403:
           description: Incorrect login or password
   /auth/signup:
@@ -160,7 +162,7 @@ paths:
         - Signup
       security: [ ]
       summary: Signup
-      description: Signup a user
+      description: Creates a new User
       requestBody:
         required: true
         content:
@@ -183,12 +185,10 @@ paths:
                 - login
                 - password
       responses:
-        204:
-          description: Successful signup
+        201:
+          description: Successful signup - User is created
         400:
           description: Bad request
-        409:
-          description: Conflict. Login already exists
   /user:
     get:
       tags:
