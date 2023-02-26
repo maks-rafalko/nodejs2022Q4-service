@@ -47,7 +47,7 @@ export class UserController {
 
   @Delete(':uuid')
   @HttpCode(StatusCodes.NO_CONTENT)
-  async remove(@Param('uuid', ParseUUIDPipe, UserByIdPipe) user: User) {
-    return await this.userService.remove(user);
+  async remove(@Param('uuid', ParseUUIDPipe, UserByIdPipe) user: User): Promise<void> {
+     await this.userService.remove(user);
   }
 }
