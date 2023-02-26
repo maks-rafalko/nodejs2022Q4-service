@@ -5,7 +5,6 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
-    console.log('JwtStrategy constructor');
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -15,8 +14,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log('JwtStrategy validate');
-    // todo login?
-    return { id: payload.sub, login: payload.username };
+    return { id: payload.sub, login: payload.login };
   }
 }

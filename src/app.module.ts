@@ -50,10 +50,10 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
       provide: APP_FILTER,
       useClass: LoggingExceptionsFilter,
     },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({

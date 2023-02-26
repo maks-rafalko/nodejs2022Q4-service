@@ -5,6 +5,7 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { CreateUserDto } from './user/dto/create-user.dto';
 import { User } from './user/entities/user.entity';
 import { UserService } from './user/user.service';
+import { Public } from './auth/is-public.decorator';
 
 @Controller()
 export class AppController {
@@ -13,15 +14,16 @@ export class AppController {
     private readonly userService: UserService,
     ) {}
 
+  @Public()
   @Post('auth/signup')
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return await this.userService.create(createUserDto);
   }
 
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
-    console.log(`AppController.login(). req.user=${req.user}`);
     return this.authService.login(req.user);
   }
 
