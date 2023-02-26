@@ -75,7 +75,7 @@ export class AppLogger implements LoggerInterface {
   }
 
   private writeToFile(level: LogLevel, logLine: string) {
-    const fileName = 'application.log';
+    const fileName = level === 'error' ? 'error.log' : 'application.log';
     const filePath = join('.', 'logs', fileName);
     const dirName = dirname(filePath);
 
