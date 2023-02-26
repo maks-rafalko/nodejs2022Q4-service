@@ -6,7 +6,9 @@ import { dirname, join } from 'node:path';
 const BITES_IN_KILOBYTE = 1024;
 const DEFAULT_LOG_FILE_MAX_SIZE_KB = 10;
 
-const logFileMaxSizeInKb = parseInt(process.env.LOG_FILE_MAX_SIZE_KB, 10) || DEFAULT_LOG_FILE_MAX_SIZE_KB;
+const logFileMaxSizeInKb =
+  parseInt(process.env.LOG_FILE_MAX_SIZE_KB, 10) ||
+  DEFAULT_LOG_FILE_MAX_SIZE_KB;
 
 const logLevels: LogLevel[] = ['error', 'warn', 'log', 'verbose', 'debug'];
 
@@ -57,7 +59,8 @@ export class AppLogger implements LoggerInterface {
       return;
     }
 
-    const logLine = `${level.toUpperCase()}: ${message} ${optionalParams.join(' ')}` + '\n';
+    const logLine =
+      `${level.toUpperCase()}: ${message} ${optionalParams.join(' ')}` + '\n';
 
     process.stdout.write(logLine);
 
@@ -80,7 +83,7 @@ export class AppLogger implements LoggerInterface {
     const dirName = dirname(filePath);
 
     try {
-      const stats = statSync(filePath)
+      const stats = statSync(filePath);
       const fileSizeInBytes = stats.size;
 
       const fileSizeInKilobytes = fileSizeInBytes / BITES_IN_KILOBYTE;
@@ -89,9 +92,7 @@ export class AppLogger implements LoggerInterface {
         const oldFilePath = join(dirName, `${Date.now()}-${fileName}`);
         renameSync(filePath, oldFilePath);
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
 
     mkdirSync(dirName, { recursive: true });
     appendFileSync(filePath, logLine);

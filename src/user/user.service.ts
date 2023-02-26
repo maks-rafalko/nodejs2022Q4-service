@@ -26,6 +26,10 @@ export class UserService {
     return await this.usersRepository.findOneBy({ id: uuid });
   }
 
+  async findOneByLogin(login: string): Promise<User | null> {
+    return await this.usersRepository.findOneBy({ login: login });
+  }
+
   async update(uuid: string, updateUserDto: UpdateUserDto) {
     const existingUser = await this.usersRepository.findOneBy({ id: uuid });
 

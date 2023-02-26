@@ -19,15 +19,16 @@ async function bootstrap() {
   const loggerService = app.get(AppLogger);
 
   process.on('uncaughtException', (err, origin) => {
-    loggerService.error(`Uncaught exception (listener): ${err}. Exception origin: ${origin}.`)
+    loggerService.error(
+      `Uncaught exception (listener): ${err}. Exception origin: ${origin}.`,
+    );
     process.exit(1);
   });
 
-  process.on('unhandledRejection', (reason, promise) => {
+  process.on('unhandledRejection', (reason) => {
     loggerService.error(`Unhandled Rejection (listener): ${reason}`);
   });
 
   await app.listen(process.env.PORT || 4000);
 }
 bootstrap();
-

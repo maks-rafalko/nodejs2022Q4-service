@@ -37,7 +37,9 @@ export class LoggingExceptionsFilter implements ExceptionFilter {
       message: 'Internal Server Error',
     };
 
-    this.logger.error(`Uncaught exception: ${exception.message} ${exception.stack}}`)
+    this.logger.error(
+      `Uncaught exception: ${exception.message} ${exception.stack}}`,
+    );
 
     this.logger.logResponse(httpStatus, responseBody);
 

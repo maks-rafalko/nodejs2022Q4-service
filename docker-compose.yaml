@@ -13,6 +13,7 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       LOG_LEVEL: ${LOG_LEVEL}
       LOG_FILE_MAX_SIZE_KB: ${LOG_FILE_MAX_SIZE_KB}
+      JWT_SECRET: ${JWT_SECRET}
     ports:
       - "${PORT}:${PORT}"
     networks:
