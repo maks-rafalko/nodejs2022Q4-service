@@ -27,7 +27,6 @@ export class ArtistController {
 
   @Get()
   async findAll(): Promise<Artist[]> {
-    throw new Error('Test error');
     return await this.artistService.findAll();
   }
 

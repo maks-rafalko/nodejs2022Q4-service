@@ -1,5 +1,12 @@
 import { LoggerService as LoggerInterface, LogLevel } from '@nestjs/common';
 import * as process from 'process';
+import { appendFileSync, mkdirSync, statSync, renameSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+
+const BITES_IN_KILOBYTE = 1024;
+const DEFAULT_LOG_FILE_MAX_SIZE_KB = 10;
+
+const logFileMaxSizeInKb = parseInt(process.env.LOG_FILE_MAX_SIZE_KB, 10) || DEFAULT_LOG_FILE_MAX_SIZE_KB;
 
 const logLevels: LogLevel[] = ['error', 'warn', 'log', 'verbose', 'debug'];
 
@@ -50,9 +57,11 @@ export class AppLogger implements LoggerInterface {
       return;
     }
 
-    process.stdout.write(
-      `${level.toUpperCase()}: ${message} ${optionalParams.join(' ')}` + '\n',
-    );
+    const logLine = `${level.toUpperCase()}: ${message} ${optionalParams.join(' ')}` + '\n';
+
+    process.stdout.write(logLine);
+
+    this.writeToFile(level, logLine);
   }
 
   private getLogLevel(): LogLevel {
@@ -63,5 +72,28 @@ export class AppLogger implements LoggerInterface {
     }
 
     return logLevel as LogLevel;
+  }
+
+  private writeToFile(level: LogLevel, logLine: string) {
+    const fileName = 'application.log';
+    const filePath = join('.', 'logs', fileName);
+    const dirName = dirname(filePath);
+
+    try {
+      const stats = statSync(filePath)
+      const fileSizeInBytes = stats.size;
+
+      const fileSizeInKilobytes = fileSizeInBytes / BITES_IN_KILOBYTE;
+
+      if (fileSizeInKilobytes > logFileMaxSizeInKb) {
+        const oldFilePath = join(dirName, `${Date.now()}-${fileName}`);
+        renameSync(filePath, oldFilePath);
+      }
+    } catch (error) {
+
+    }
+
+    mkdirSync(dirName, { recursive: true });
+    appendFileSync(filePath, logLine);
   }
 }
