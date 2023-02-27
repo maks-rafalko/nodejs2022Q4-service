@@ -71,7 +71,13 @@ export class UserService {
     return await this.usersRepository.remove(user);
   }
 
-  async findByIdAndRefreshToken(userId: string, refreshToken: string): Promise<User | null> {
-    return await this.usersRepository.findOneBy({ id: userId, refreshToken: refreshToken });
+  async findByIdAndRefreshToken(
+    userId: string,
+    refreshToken: string,
+  ): Promise<User | null> {
+    return await this.usersRepository.findOneBy({
+      id: userId,
+      refreshToken: refreshToken,
+    });
   }
 }

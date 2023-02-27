@@ -42,10 +42,13 @@ export class AuthService {
     return tokens;
   }
 
-  async refreshTokens(payload: JwtPayload, refreshToken: string) {
+  async refreshTokens(payload: JwtPayload) {
     const tokens = this.generateTokens(payload.login, payload.userId);
 
-    await this.userService.updateRefreshToken(payload.userId, tokens.refreshToken);
+    await this.userService.updateRefreshToken(
+      payload.userId,
+      tokens.refreshToken,
+    );
 
     return tokens;
   }

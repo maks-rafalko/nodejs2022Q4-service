@@ -1,7 +1,11 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtPayload } from './jwt-payload.type';
 import { UserService } from '../user/user.service';
 
@@ -25,7 +29,10 @@ export class RefreshTokenStrategy extends PassportStrategy(
       throw new UnauthorizedException();
     }
 
-    const user = await this.userService.findByIdAndRefreshToken(payload.userId, refreshToken);
+    const user = await this.userService.findByIdAndRefreshToken(
+      payload.userId,
+      refreshToken,
+    );
 
     if (!user || req.body.refreshToken !== refreshToken) {
       throw new ForbiddenException();

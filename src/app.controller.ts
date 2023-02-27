@@ -54,7 +54,7 @@ export class AppController {
   async refresh(@Request() req) {
     const user: JwtPayload & { refreshToken: string } = req.user;
 
-    return await this.authService.refreshTokens(user, user.refreshToken);
+    return await this.authService.refreshTokens(user);
   }
 
   @Get('auth/restricted')
@@ -74,7 +74,8 @@ export class AppController {
     this.logger.debug('Logger debug');
 
     return {
-      message: 'Check the logs - all levels should have been logged if according to LOG_LEVEL.',
+      message:
+        'Check the logs - all levels should have been logged if according to LOG_LEVEL.',
     };
   }
 
