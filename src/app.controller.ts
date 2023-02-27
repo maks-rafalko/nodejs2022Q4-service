@@ -65,7 +65,7 @@ export class AppController {
   }
 
   @Public()
-  @Get('logger')
+  @Get('check-logger')
   async checkLogger() {
     this.logger.error('Logger error');
     this.logger.warn('Logger warn');
@@ -76,5 +76,11 @@ export class AppController {
     return {
       message: 'Check the logs - all levels should have been logged if according to LOG_LEVEL.',
     };
+  }
+
+  @Public()
+  @Get('check-error')
+  async checkError() {
+    throw new Error('This is a test error');
   }
 }

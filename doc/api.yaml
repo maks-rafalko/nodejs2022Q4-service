@@ -230,10 +230,10 @@ paths:
           description: No Refresh Token in body
         403:
           description: Refresh token is invalid or expired
-  /logger:
+  /check-logger:
     get:
       tags:
-        - Logger
+        - Test endpoints
       security: [ ]
       summary: Test custom logger
       description: Test API endpoint to check how custom logger works
@@ -249,6 +249,16 @@ paths:
                     type: string
                     description: Message
                     example: 'Hello from logger'
+  /check-error:
+    get:
+      tags:
+        - Test endpoints
+      security: [ ]
+      summary: Test custom logger
+      description: Test API endpoint to check how custom logger works
+      responses:
+        500:
+          description: Test error, logged to `error.log`
   /user:
     get:
       tags:
