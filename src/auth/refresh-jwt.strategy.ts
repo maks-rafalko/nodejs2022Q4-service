@@ -21,14 +21,13 @@ export class RefreshTokenStrategy extends PassportStrategy(
   async validate(req: Request, payload: JwtPayload) {
     const refreshToken = req.get('Authorization').replace('Bearer', '').trim();
 
-    // check that refresh token in headers and in body the same (to conform with requirements)
-    if (!req.body.refreshToken || req.body.refreshToken !== refreshToken) {
+    if (!req.body.refreshToken) {
       throw new UnauthorizedException();
     }
 
     const user = await this.userService.findByIdAndRefreshToken(payload.userId, refreshToken);
 
-    if (!user) {
+    if (!user || req.body.refreshToken !== refreshToken) {
       throw new ForbiddenException();
     }
 

@@ -17,12 +17,14 @@ import { LoginDto } from './user/dto/login.dto';
 import { StatusCodes } from 'http-status-codes';
 import { RefreshTokenGuard } from './auth/refresh-jwt-auth.guard';
 import { JwtPayload } from './auth/jwt-payload.type';
+import { AppLogger } from './logger/logger.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly logger: AppLogger,
   ) {}
 
   @Public()
@@ -59,6 +61,20 @@ export class AppController {
   async restricted() {
     return {
       message: 'finally, you can see restricted area! Congratulations.',
+    };
+  }
+
+  @Public()
+  @Get('logger')
+  async checkLogger() {
+    this.logger.error('Logger error');
+    this.logger.warn('Logger warn');
+    this.logger.log('Logger log');
+    this.logger.verbose('Logger verbose');
+    this.logger.debug('Logger debug');
+
+    return {
+      message: 'Check the logs - all levels should have been logged if according to LOG_LEVEL.',
     };
   }
 }

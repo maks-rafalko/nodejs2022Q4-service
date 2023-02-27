@@ -123,7 +123,7 @@ paths:
         - Login
       security: [ ]
       summary: Login
-      description: Logins a user and returns a JWT-token
+      description: Logins a user and returns a JWT and Refresh tokens
       requestBody:
         required: true
         content:
@@ -230,6 +230,25 @@ paths:
           description: No Refresh Token in body
         403:
           description: Refresh token is invalid or expired
+  /logger:
+    get:
+      tags:
+        - Logger
+      security: [ ]
+      summary: Test custom logger
+      description: Test API endpoint to check how custom logger works
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Message
+                    example: 'Hello from logger'
   /user:
     get:
       tags:
