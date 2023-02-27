@@ -149,9 +149,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  token:
+                  accessToken:
                     type: string
-                description: JWT Token
+                    description: JWT Token
+                  refreshToken:
+                    type: string
+                    description: Refresh Token
         400:
           description: Bad request
         403:
@@ -189,6 +192,44 @@ paths:
           description: Successful signup - User is created
         400:
           description: Bad request
+  /auth/refresh:
+    post:
+      tags:
+        - Refresh
+      summary: Refresh access token
+      description: Regenerates a new pair of Access and Refresh tokens, by providing valid Refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                refreshToken:
+                  type: string
+                  description: refresh token
+                  example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im1ha3MiLCJ1c2VySWQiOiI3ZmEzNjQ1MS1mZWYyLTRjNjMtODM0Mi05MzYwMjhlNTAxM2QiLCJzdWIiOiI3ZmEzNjQ1MS1mZWYyLTRjNjMtODM0Mi05MzYwMjhlNTAxM2QiLCJpYXQiOjE2Nzc0ODk5NDJ9.XPDVjXWqwzVeudxxNy6T5YTtZ_pqRFwDvvR0Krb-cjI'
+              required:
+                - refreshToken
+      responses:
+        200:
+          description: Successful login.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    description: JWT Token
+                  refreshToken:
+                    type: string
+                    description: Refresh Token
+        401:
+          description: No Refresh Token in body
+        403:
+          description: Refresh token is invalid or expired
   /user:
     get:
       tags:

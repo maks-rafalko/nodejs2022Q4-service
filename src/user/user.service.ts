@@ -55,7 +55,23 @@ export class UserService {
     return existingUser;
   }
 
+  async updateRefreshToken(uuid: string, refreshToken: string): Promise<void> {
+    const existingUser = await this.usersRepository.findOneBy({ id: uuid });
+
+    if (!existingUser) {
+      return;
+    }
+
+    existingUser.refreshToken = refreshToken;
+
+    await this.usersRepository.save(existingUser);
+  }
+
   async remove(user: User) {
     return await this.usersRepository.remove(user);
+  }
+
+  async findByIdAndRefreshToken(userId: string, refreshToken: string): Promise<User | null> {
+    return await this.usersRepository.findOneBy({ id: userId, refreshToken: refreshToken });
   }
 }

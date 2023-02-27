@@ -15,6 +15,8 @@ import { UserService } from './user/user.service';
 import { Public } from './auth/is-public.decorator';
 import { LoginDto } from './user/dto/login.dto';
 import { StatusCodes } from 'http-status-codes';
+import { RefreshTokenGuard } from './auth/refresh-jwt-auth.guard';
+import { JwtPayload } from './auth/jwt-payload.type';
 
 @Controller()
 export class AppController {
@@ -41,6 +43,16 @@ export class AppController {
   @HttpCode(StatusCodes.OK)
   async login(@Body() loginDto: LoginDto, @Request() req) {
     return await this.authService.login(req.user);
+  }
+
+  @Public()
+  @UseGuards(RefreshTokenGuard)
+  @Post('auth/refresh')
+  @HttpCode(StatusCodes.OK)
+  async refresh(@Request() req) {
+    const user: JwtPayload & { refreshToken: string } = req.user;
+
+    return await this.authService.refreshTokens(user, user.refreshToken);
   }
 
   @Get('auth/restricted')

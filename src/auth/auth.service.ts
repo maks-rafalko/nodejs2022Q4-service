@@ -3,11 +3,12 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/entities/user.entity';
 import { compare } from 'bcrypt';
+import { JwtPayload } from './jwt-payload.type';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UserService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -15,7 +16,7 @@ export class AuthService {
     username: string,
     rawPassword: string,
   ): Promise<Omit<User, 'password'> | null> {
-    const user = await this.usersService.findOneByLogin(username);
+    const user = await this.userService.findOneByLogin(username);
 
     if (user === null) {
       return null;
@@ -34,15 +35,36 @@ export class AuthService {
   }
 
   async login(user: Omit<User, 'password'>) {
+    const tokens = this.generateTokens(user.login, user.id);
+
+    await this.userService.updateRefreshToken(user.id, tokens.refreshToken);
+
+    return tokens;
+  }
+
+  async refreshTokens(payload: JwtPayload, refreshToken: string) {
+    const tokens = this.generateTokens(payload.login, payload.userId);
+
+    await this.userService.updateRefreshToken(payload.userId, tokens.refreshToken);
+
+    return tokens;
+  }
+
+  private generateTokens(login: string, userId: string) {
     const payload = {
-      login: user.login,
-      userId: user.id,
-      sub: user.id,
+      login: login,
+      userId: userId,
+      sub: userId,
     };
 
     return {
       accessToken: this.jwtService.sign(payload, {
-        secret: process.env.JWT_SECRET,
+        secret: process.env.JWT_ACCESS_SECRET,
+        expiresIn: '15m',
+      }),
+      refreshToken: this.jwtService.sign(payload, {
+        secret: process.env.JWT_REFRESH_SECRET,
+        expiresIn: '60d',
       }),
     };
   }
