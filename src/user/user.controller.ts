@@ -26,12 +26,14 @@ export class UserController {
   }
 
   @Get()
-  async findAll() {
+  async findAll(): Promise<User[]> {
     return await this.userService.findAll();
   }
 
   @Get(':uuid')
-  async findOne(@Param('uuid', ParseUUIDPipe, UserByIdPipe) user: User) {
+  async findOne(
+    @Param('uuid', ParseUUIDPipe, UserByIdPipe) user: User,
+  ): Promise<User> {
     return user;
   }
 
@@ -45,7 +47,9 @@ export class UserController {
 
   @Delete(':uuid')
   @HttpCode(StatusCodes.NO_CONTENT)
-  async remove(@Param('uuid', ParseUUIDPipe, UserByIdPipe) user: User) {
-    return await this.userService.remove(user.id);
+  async remove(
+    @Param('uuid', ParseUUIDPipe, UserByIdPipe) user: User,
+  ): Promise<void> {
+    await this.userService.remove(user);
   }
 }
