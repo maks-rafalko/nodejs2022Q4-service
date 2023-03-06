@@ -25,6 +25,10 @@ export class User {
   @Column()
   password: string;
 
+  @Exclude()
+  @Column('varchar', { nullable: true, default: null, length: 500 })
+  refreshToken: string | null;
+
   @Column()
   version: number;
 

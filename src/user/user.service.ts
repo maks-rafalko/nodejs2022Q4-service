@@ -4,6 +4,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { hash, compare } from 'bcrypt';
+
+const HASH_ROUNDS = 10;
 
 @Injectable()
 export class UserService {
@@ -13,8 +16,10 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    const hashedPassword = await hash(createUserDto.password, HASH_ROUNDS);
+
     return this.usersRepository.save(
-      new User(createUserDto.login, createUserDto.password),
+      new User(createUserDto.login, hashedPassword),
     );
   }
 
@@ -26,14 +31,23 @@ export class UserService {
     return await this.usersRepository.findOneBy({ id: uuid });
   }
 
+  async findOneByLogin(login: string): Promise<User | null> {
+    return await this.usersRepository.findOneBy({ login: login });
+  }
+
   async update(uuid: string, updateUserDto: UpdateUserDto) {
     const existingUser = await this.usersRepository.findOneBy({ id: uuid });
 
-    if (updateUserDto.oldPassword !== existingUser.password) {
+    const passwordsMatch = await compare(
+      updateUserDto.oldPassword,
+      existingUser.password,
+    );
+
+    if (!passwordsMatch) {
       throw new ForbiddenException('Old password is incorrect');
     }
 
-    existingUser.password = updateUserDto.newPassword;
+    existingUser.password = await hash(updateUserDto.newPassword, HASH_ROUNDS);
     existingUser.version = existingUser.version + 1;
 
     await this.usersRepository.save(existingUser);
@@ -41,7 +55,29 @@ export class UserService {
     return existingUser;
   }
 
+  async updateRefreshToken(uuid: string, refreshToken: string): Promise<void> {
+    const existingUser = await this.usersRepository.findOneBy({ id: uuid });
+
+    if (!existingUser) {
+      return;
+    }
+
+    existingUser.refreshToken = refreshToken;
+
+    await this.usersRepository.save(existingUser);
+  }
+
   async remove(user: User) {
     return await this.usersRepository.remove(user);
+  }
+
+  async findByIdAndRefreshToken(
+    userId: string,
+    refreshToken: string,
+  ): Promise<User | null> {
+    return await this.usersRepository.findOneBy({
+      id: userId,
+      refreshToken: refreshToken,
+    });
   }
 }
